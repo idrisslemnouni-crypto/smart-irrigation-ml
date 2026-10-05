@@ -1,4 +1,4 @@
-# Smart Irrigation ML — Measured Soil Screening
+# Smart Irrigation ML â€” Measured Soil Screening
 
 Predict a next-day **shallow-soil moisture proxy**, with an unseen-station test and a persistence baseline. No observed irrigation decisions or crop-stress labels are available.
 
@@ -6,26 +6,26 @@ Predict a next-day **shallow-soil moisture proxy**, with an unseen-station test 
 
 ## Problem and scope
 
-An irrigation research system needs trustworthy soil measurements before decision rules. This project predicts whether tomorrow's measured moisture at 10 cm will be below a predefined exploratory threshold, **0.20 m³/m³**. That threshold is not a crop-specific wilting point or an agronomic prescription. NOAA sites are reference stations, not verified irrigated farm plots. No water savings, yield benefit or irrigation accuracy is claimed.
+An irrigation research system needs trustworthy soil measurements before decision rules. This project predicts whether tomorrow's measured moisture at 10 cm will be below a predefined exploratory threshold, **0.20 mÂ³/mÂ³**. That threshold is not a crop-specific wilting point or an agronomic prescription. NOAA sites are reference stations, not verified irrigated farm plots. No water savings, yield benefit or irrigation accuracy is claimed.
 
 ## Dataset
 
-Real [NOAA USCRN daily observations](https://www.ncei.noaa.gov/pub/data/uscrn/products/daily01/), 2016–2024: Iowa Des Moines 17 E, Missouri Chillicothe 22 ENE, Illinois Champaign 9 SW. **9,864 source rows**, 8,230 retained with observed current and next-day shallow soil measurements. Inputs: measured 5/10 cm moisture (m³/m³), precipitation (mm), air temperature (°C), relative humidity (%), solar radiation (MJ/m²/day), past lags/rolling means and cyclic day-of-year.
+Real [NOAA USCRN daily observations](https://www.ncei.noaa.gov/pub/data/uscrn/products/daily01/), 2016â€“2024: Iowa Des Moines 17 E, Missouri Chillicothe 22 ENE, Illinois Champaign 9 SW. **9,864 source rows**, 8,230 retained with observed current and next-day shallow soil measurements. Inputs: measured 5/10 cm moisture (mÂ³/mÂ³), precipitation (mm), air temperature (Â°C), relative humidity (%), solar radiation (MJ/mÂ²/day), past lags/rolling means and cyclic day-of-year.
 
 Daily records follow local standard time. Sentinel missing values and invalid physical ranges are masked before labels. Targets are never imputed. Missing/frozen-soil periods can bias retained season coverage. [Source hashes](data/source-manifest.json), [field definitions](data/source-headers.txt), [official format](https://www.ncei.noaa.gov/pub/data/uscrn/products/daily01/readme.txt) and [data notes](data/README.md) preserve provenance. NOAA-produced observations are public domain in the United States under [NCEI's Open Data Policy](https://www.ncei.noaa.gov/sites/default/files/2023-12/NCEI%20PD-10-2-02%20-%20Open%20Data%20Policy%20Signed.pdf). Code is MIT; source terms remain separate.
 
 ## Leakage controls and workflow
 
 ```text
-Hash-verified station files → daily calendar / missing-value handling
-→ features available through origin t → next-day observed threshold proxy
-→ station/time splits → train-only imputation → validation model/threshold selection
-→ unseen-station test → probabilities, error analysis and local inference
+Hash-verified station files â†’ daily calendar / missing-value handling
+â†’ features available through origin t â†’ next-day observed threshold proxy
+â†’ station/time splits â†’ train-only imputation â†’ validation model/threshold selection
+â†’ unseen-station test â†’ probabilities, error analysis and local inference
 ```
 
-Train: Iowa/Missouri target dates through 2021; validation: 2022 at those stations; test: **Illinois only, 2023–2024**. Split sizes: {'train': 3971, 'validation': 323, 'test': 552}. No Illinois row enters training or selection. Station identity is excluded. Features include origin-day measurements, never tomorrow's weather. This is retrospective end-of-day forecasting: operational availability and source revision latency are unverified.
+Train: Iowa/Missouri target dates through 2021; validation: 2022 at those stations; test: **Illinois only, 2023â€“2024**. Split sizes: {'train': 3971, 'validation': 323, 'test': 552}. No Illinois row enters training or selection. Iowa contributes only three observed one-day pairs in validation year 2022; Missouri dominates validation coverage. This selective seasonal/site coverage limits model-selection evidence. Station identity is excluded. Features include origin-day measurements, never tomorrow's weather. This is retrospective end-of-day forecasting: operational availability and source revision latency are unverified.
 
-Compare current-status persistence, standardized balanced logistic regression, and balanced Random Forest (160 trees, depth 10, leaf minimum 5, seed 42). Fit imputation/scaling only on train. Select probability thresholds from the fixed 0.1–0.9 grid on validation, then select the method by validation positive-class F1. No refit or reselection after test inspection. A persistence method may legitimately win; the inference contract supports that case.
+Compare current-status persistence, standardized balanced logistic regression, and balanced Random Forest (160 trees, depth 10, leaf minimum 5, seed 42). Fit imputation/scaling only on train. Select probability thresholds from the fixed 0.1â€“0.9 grid on validation, then select the method by validation positive-class F1. No refit or reselection after test inspection. A persistence method may legitimately win; the inference contract supports that case.
 
 ## Executed results
 

@@ -1,0 +1,20 @@
+{
+  "description": "Next-day measured-soil proxy screening with temporal and unseen-station holdouts; no fabricated irrigation labels",
+  "topics": [
+    "agriculture",
+    "soil-moisture",
+    "machine-learning",
+    "random-forest",
+    "time-series"
+  ],
+  "issues": [
+    {
+      "title": "Obtain farm irrigation and root-zone ground truth",
+      "body": "The current target is a measured shallow-moisture threshold proxy. Acquire independently licensed farm/root-zone measurements and observed irrigation decisions before claiming an irrigation recommendation or water savings."
+    },
+    {
+      "title": "Quantify seasonal missingness and correlated-day uncertainty",
+      "body": "Evaluate missing/frozen-soil periods and estimate interval uncertainty with time-block resampling without tuning the already inspected test."
+    }
+  ]
+}

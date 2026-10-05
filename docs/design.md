@@ -1,0 +1,7 @@
+# Design — Soil moisture screening for irrigation research
+
+Real NOAA USCRN daily soil moisture at 10 cm and meteorology from three reference stations, 2016–2024. These are not irrigated crop-field measurements. No observed irrigation decisions or crop-specific stress labels exist. Predict whether next-day measured shallow moisture is below the predefined 0.20 m³/m³ exploratory threshold; this is a sensor proxy, never an irrigation ground truth.
+
+End-of-day origin t; only measured variables through t. Calendar-aligned lags/rolling history, no future weather. Train Iowa/Missouri through target year 2021; select model and probability threshold on 2022 at those stations. Test only unseen Illinois station targets 2023–2024. Exclude station identity; fit imputation/scaling only on train. Compare present-status persistence, logistic regression and balanced Random Forest. Select once on validation positive-class F1, evaluate all candidates for transparency but do not reselect on test. Report class prevalence, PR-AUC, recall/F1 and false alarms. No crop/root-zone model or physiological decision claim.
+
+Pin source hashes; NOAA sentinel missing values are masked before labels/feature construction. Evaluate on rows with actual future target and actual current soil measurement for a fair persistence comparison. Export the fixed selected model, sample inputs, per-day probabilities, confusion matrix, permutation importance and French learning notes. Save locally, publish on daily turn.

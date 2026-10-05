@@ -64,3 +64,8 @@ Acquisition downloads 27 small public text files and verifies pinned hashes. If 
 Shallow moisture differs from root-zone available water. Crop, soil retention curve, field capacity, rooting depth and actual irrigation are unknown. Serially correlated days reduce independent sample size; no confidence interval or water-saving estimate is claimed. The station holdout is only one location and missingness is selective. Obtain independent farm measurements and observed decisions, define crop-specific thresholds, and evaluate decision costs before extending this screening demonstration to an irrigation tool.
 
 Developed with AI assistance. All metrics come from executed observations. External deployment and public CI are pending daily publication.
+
+
+## GitHub publication
+
+[Public repository](https://github.com/idrisslemnouni-crypto/smart-irrigation-ml) · [Current CI results](https://github.com/idrisslemnouni-crypto/smart-irrigation-ml/actions). Published following the user's explicit 5 October 2026 request to release the prepared portfolio together. Earlier local-verification notes describe the pre-publication checkpoint. Raw sources and trained artifacts remain excluded from Git; reproduction commands regenerate them.

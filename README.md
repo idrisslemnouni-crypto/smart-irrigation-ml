@@ -55,7 +55,7 @@ python -m irrigation.predict
 python -m pytest -q
 ```
 
-Acquisition downloads 27 small public text files and verifies pinned hashes. If NOAA revises a file, it fails explicitly instead of silently changing the study. Local raw data and trained artifacts are ignored in Git; the supplied source ZIP reproduces them. Load joblib only from trusted artifacts trained locally by this repository. Example input is a real held-out row with missing values represented as null; exact feature names, finite values and moisture ranges are checked.
+Acquisition downloads 27 small public text files and verifies pinned hashes. If NOAA revises a file, it fails explicitly instead of silently changing the study. Local raw data and trained artifacts are ignored in Git; the supplied source ZIP reproduces them. Load joblib only from trusted artifacts trained locally by this repository. Example input is a real held-out row with missing values represented as null. Inference checks exact names and finite values, current/lagged/rolling moisture in [0,1] m³/m³, RH in [0,100] percent, nonnegative precipitation/radiation and supported Celsius temperatures [-90,65]. Seasonal sine/cosine must be bounded and coherent (squared norm tolerance 0.001). Null values remain available to the existing training-only imputer; no unit conversion is guessed.
 
 `src/irrigation` contains source handling, features, training and inference. `configs` fixes choices before testing. `reports` stores actual outputs; `tests` checks calendar gaps, historical rolling windows, next-day targets, station overlap and inference. [Executed notebook](notebooks/01_evidence.ipynb), [verification](docs/verification.md), [French learning guide](docs/learning-guide.md), [interview notes](docs/interview-notes.md), [design](docs/design.md).
 
@@ -63,7 +63,7 @@ Acquisition downloads 27 small public text files and verifies pinned hashes. If 
 
 Shallow moisture differs from root-zone available water. Crop, soil retention curve, field capacity, rooting depth and actual irrigation are unknown. Serially correlated days reduce independent sample size; no confidence interval or water-saving estimate is claimed. The station holdout is only one location and missingness is selective. Obtain independent farm measurements and observed decisions, define crop-specific thresholds, and evaluate decision costs before extending this screening demonstration to an irrigation tool.
 
-Developed with AI assistance. All metrics come from executed observations. External deployment and public CI are pending daily publication.
+Developed with AI assistance. All metrics come from executed observations. The 6 October inference-unit correction retains the existing model and scientific reports; the real example's prediction is unchanged. Public CI checks installation/lint/tests; no external deployment is claimed.
 
 
 ## GitHub publication
